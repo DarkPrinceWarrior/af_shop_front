@@ -7,6 +7,10 @@ interface TopBarProps {
   onOpenCart: () => void;
 }
 
+const SELECT_PILL =
+  'appearance-none rounded-full border border-input bg-card py-2 pe-7 ps-3 text-sm cursor-pointer ' +
+  'hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring';
+
 export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
   const { language, currency, bootstrap, setLanguage, setCurrency, t } = useShop();
 
@@ -14,13 +18,18 @@ export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
   const currencies: CurrencyCode[] = bootstrap?.currencies ?? ['AFN', 'CNY', 'USD'];
 
   return (
-    <header className="topbar" role="banner">
-      <div className="topbar-inner">
-        <div className="brand">{t('app.title')}</div>
-        <div className="topbar-spacer" />
-        <div className="topbar-controls">
+    <header
+      className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur shadow-sm"
+      role="banner"
+    >
+      <div className="mx-auto flex min-h-14 max-w-[1200px] items-center gap-3 px-4 py-2">
+        <div className="text-lg font-bold tracking-tight whitespace-nowrap">
+          {t('app.title')}
+        </div>
+        <div className="flex-1" />
+        <div className="flex items-center gap-2">
           <select
-            className="select-pill"
+            className={SELECT_PILL}
             value={language}
             onChange={(e) => setLanguage(e.target.value as LanguageCode)}
             aria-label={t('topbar.language')}
@@ -32,7 +41,7 @@ export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
             ))}
           </select>
           <select
-            className="select-pill"
+            className={SELECT_PILL}
             value={currency}
             onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
             aria-label={t('topbar.currency')}
@@ -45,13 +54,17 @@ export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
           </select>
           <button
             type="button"
-            className="cart-button"
             onClick={onOpenCart}
             aria-label={t('topbar.cart')}
+            className="relative inline-flex items-center gap-1.5 rounded-full border border-input bg-card px-3.5 py-2 text-sm hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
           >
             <span aria-hidden="true">🛒</span>
             <span>{t('topbar.cart')}</span>
-            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+            {cartCount > 0 && (
+              <span className="ms-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-primary-foreground">
+                {cartCount}
+              </span>
+            )}
           </button>
         </div>
       </div>

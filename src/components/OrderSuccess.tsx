@@ -10,17 +10,25 @@ interface Props {
 export function OrderSuccess({ order, onContinue }: Props) {
   const { language, t } = useShop();
   return (
-    <div className="success-card">
-      <h2>{t('success.title')}</h2>
-      <p>
+    <div className="mx-auto my-6 max-w-[480px] rounded-xl border border-border bg-card p-6 text-center shadow-md">
+      <h2 className="m-0 mb-2 text-2xl font-semibold text-primary">
+        {t('success.title')}
+      </h2>
+      <p className="m-0">
         <strong>{t('success.orderNumber')}</strong>
       </p>
-      <div className="order-number">{order.order_number}</div>
-      <div className="total">
+      <div className="mt-2 inline-block break-all rounded-md bg-muted px-3 py-2 font-mono text-base">
+        {order.order_number}
+      </div>
+      <div className="mt-3 text-lg font-bold">
         {t('success.total')}: {formatPrice(order.total, order.currency, language)}
       </div>
-      <p>{t('success.note')}</p>
-      <button type="button" className="btn btn-primary" onClick={onContinue}>
+      <p className="my-3 text-muted-foreground">{t('success.note')}</p>
+      <button
+        type="button"
+        onClick={onContinue}
+        className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+      >
         {t('success.continue')}
       </button>
     </div>

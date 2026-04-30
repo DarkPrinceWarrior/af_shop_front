@@ -3,6 +3,7 @@ import { useShop } from '@/state/useShop';
 import { ApiError, createOrder, quoteOrder } from '@/api/client';
 import type { OrderPayload, OrderQuote, OrderResponse } from '@/api/types';
 import { formatPrice } from '@/utils/format';
+import { cn } from '@/lib/utils';
 import { DeliveryPlaceCard } from './DeliveryPlaceCard';
 
 interface Props {
@@ -25,6 +26,12 @@ const INITIAL_FORM: FormState = {
   customer_comment: '',
   delivery_place_id: null,
 };
+
+const SECTION =
+  'rounded-lg border border-border bg-card p-4 shadow-sm';
+const FIELD_INPUT =
+  'w-full rounded-md border border-input bg-card px-3 py-2.5 text-[15px] focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring';
+const FIELD_INPUT_INVALID = 'border-destructive focus:border-destructive';
 
 export function Checkout({ onBack, onSuccess }: Props) {
   const {
@@ -190,9 +197,13 @@ export function Checkout({ onBack, onSuccess }: Props) {
 
   if (cart.length === 0) {
     return (
-      <div className="section">
+      <div className={SECTION}>
         <p>{t('checkout.requireItems')}</p>
-        <button type="button" className="btn btn-ghost" onClick={onBack}>
+        <button
+          type="button"
+          onClick={onBack}
+          className="rounded-md border border-input bg-card px-3.5 py-2.5 text-sm font-semibold hover:bg-muted"
+        >
           {t('checkout.back')}
         </button>
       </div>
@@ -200,18 +211,21 @@ export function Checkout({ onBack, onSuccess }: Props) {
   }
 
   return (
-    <form className="content" onSubmit={handleSubmit} noValidate>
+    <form className="flex flex-col gap-3" onSubmit={handleSubmit} noValidate>
       <div>
-        <button type="button" className="btn-link" onClick={onBack}>
+        <button
+          type="button"
+          onClick={onBack}
+          className="text-sm text-primary underline-offset-2 hover:underline"
+        >
           ← {t('checkout.back')}
         </button>
-        <h2 style={{ margin: '8px 0 16px' }}>{t('checkout.title')}</h2>
+        <h2 className="my-2 text-xl font-semibold">{t('checkout.title')}</h2>
       </div>
 
-      <section className="section">
-        <h3>{t('checkout.customer')}</h3>
-        <div className={`field ${nameInvalid ? 'invalid' : ''}`}>
-          <label htmlFor="customer_name">{t('checkout.name')} *</label>
+      <section className={SECTION}>
+        <h3 className="mb-3 text-[15px] font-semibold">{t('checkout.customer')}</h3>
+        <Field label={`${t('checkout.name')} *`} invalid={!!nameInvalid}>
           <input
             id="customer_name"
             value={form.customer_name}
@@ -219,10 +233,10 @@ export function Checkout({ onBack, onSuccess }: Props) {
             onBlur={handleBlur('customer_name')}
             autoComplete="name"
             required
+            className={cn(FIELD_INPUT, nameInvalid && FIELD_INPUT_INVALID)}
           />
-        </div>
-        <div className={`field ${phoneInvalid ? 'invalid' : ''}`}>
-          <label htmlFor="customer_phone">{t('checkout.phone')} *</label>
+        </Field>
+        <Field label={`${t('checkout.phone')} *`} invalid={!!phoneInvalid}>
           <input
             id="customer_phone"
             type="tel"
@@ -231,34 +245,34 @@ export function Checkout({ onBack, onSuccess }: Props) {
             onBlur={handleBlur('customer_phone')}
             autoComplete="tel"
             required
+            className={cn(FIELD_INPUT, phoneInvalid && FIELD_INPUT_INVALID)}
           />
-        </div>
-        <div className="field">
-          <label htmlFor="customer_telegram">{t('checkout.telegram')}</label>
+        </Field>
+        <Field label={t('checkout.telegram')} hint={t('checkout.telegramHint')}>
           <input
             id="customer_telegram"
             value={form.customer_telegram}
             onChange={handleField('customer_telegram')}
             placeholder="@username"
+            className={FIELD_INPUT}
           />
-          <span className="field-hint">{t('checkout.telegramHint')}</span>
-        </div>
-        <div className="field">
-          <label htmlFor="customer_comment">{t('checkout.comment')}</label>
+        </Field>
+        <Field label={t('checkout.comment')}>
           <textarea
             id="customer_comment"
             value={form.customer_comment}
             onChange={handleField('customer_comment')}
+            className={cn(FIELD_INPUT, 'min-h-[88px] resize-y')}
           />
-        </div>
+        </Field>
       </section>
 
-      <section className="section">
-        <h3>{t('checkout.delivery')}</h3>
+      <section className={SECTION}>
+        <h3 className="mb-3 text-[15px] font-semibold">{t('checkout.delivery')}</h3>
         {deliveryPlaces.length === 0 ? (
-          <div className="alert alert-info">{t('common.empty')}</div>
+          <Alert variant="info">{t('common.empty')}</Alert>
         ) : (
-          <div className="delivery-grid">
+          <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(220px,1fr))]">
             {deliveryPlaces.map((place) => (
               <DeliveryPlaceCard
                 key={place.id}
@@ -273,50 +287,121 @@ export function Checkout({ onBack, onSuccess }: Props) {
         )}
       </section>
 
-      <section className="section">
-        <h3>{t('checkout.summary')}</h3>
+      <section className={SECTION}>
+        <h3 className="mb-3 text-[15px] font-semibold">{t('checkout.summary')}</h3>
         {quoteLoading && (
-          <div className="loader-row">
-            <span className="spinner" aria-hidden="true" />
+          <div className="flex items-center gap-2.5 px-4 py-2 text-sm text-muted-foreground">
+            <Spinner />
             <span>{t('checkout.quoting')}</span>
           </div>
         )}
         {quoteError && !quoteLoading && (
-          <div className="alert alert-error">{quoteError}</div>
+          <Alert variant="error">{quoteError}</Alert>
         )}
         {!quoteLoading && quote && (
           <>
-            <div className="totals-row">
-              <span>{t('checkout.subtotal')}</span>
-              <span>{formatPrice(quote.subtotal, currency, language)}</span>
-            </div>
-            <div className="totals-row">
-              <span>{t('checkout.deliveryFee')}</span>
-              <span>{formatPrice(quote.delivery_fee, currency, language)}</span>
-            </div>
-            <div className="totals-row total" style={{ marginTop: 8 }}>
-              <span>{t('checkout.total')}</span>
-              <span>{formatPrice(quote.total, currency, language)}</span>
-            </div>
+            <Row label={t('checkout.subtotal')}>
+              {formatPrice(quote.subtotal, currency, language)}
+            </Row>
+            <Row label={t('checkout.deliveryFee')}>
+              {formatPrice(quote.delivery_fee, currency, language)}
+            </Row>
+            <Row label={t('checkout.total')} bold>
+              {formatPrice(quote.total, currency, language)}
+            </Row>
           </>
         )}
         {!quoteLoading && !quote && !quoteError && (
-          <div className="totals-row total">
-            <span>{t('checkout.subtotal')}</span>
-            <span>{formatPrice(fallbackSubtotal.toFixed(2), currency, language)}</span>
-          </div>
+          <Row label={t('checkout.subtotal')} bold>
+            {formatPrice(fallbackSubtotal.toFixed(2), currency, language)}
+          </Row>
         )}
       </section>
 
-      {error && <div className="alert alert-error">{error}</div>}
+      {error && <Alert variant="error">{error}</Alert>}
 
       <button
         type="submit"
-        className="btn btn-primary btn-block"
         disabled={!canSubmit}
+        className="w-full rounded-md bg-primary px-3.5 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:bg-primary/40 disabled:cursor-not-allowed"
       >
         {submitting ? t('checkout.placing') : t('checkout.placeOrder')}
       </button>
     </form>
+  );
+}
+
+function Field({
+  label,
+  hint,
+  children,
+  invalid,
+}: {
+  label: string;
+  hint?: string;
+  invalid?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="mb-3 flex flex-col gap-1 last:mb-0">
+      <label className={cn('text-[13px] font-semibold', invalid ? 'text-destructive' : 'text-muted-foreground')}>
+        {label}
+      </label>
+      {children}
+      {hint && <span className="text-xs text-muted-foreground">{hint}</span>}
+    </div>
+  );
+}
+
+function Row({
+  label,
+  bold,
+  children,
+}: {
+  label: string;
+  bold?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        'flex justify-between',
+        bold ? 'mt-2 text-base font-bold text-foreground' : 'text-sm text-muted-foreground',
+      )}
+    >
+      <span>{label}</span>
+      <span>{children}</span>
+    </div>
+  );
+}
+
+function Alert({
+  variant,
+  children,
+}: {
+  variant: 'error' | 'info';
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      role="status"
+      className={cn(
+        'flex items-start gap-2 rounded-lg border px-3.5 py-3 text-sm leading-snug',
+        variant === 'error'
+          ? 'border-destructive/40 bg-destructive/10 text-destructive'
+          : 'border-accent/30 bg-accent/10 text-accent',
+      )}
+    >
+      <div className="flex-1">{children}</div>
+    </div>
+  );
+}
+
+function Spinner() {
+  return (
+    <span
+      aria-hidden="true"
+      className="inline-block size-5 animate-spin rounded-full border-2 border-border border-t-primary"
+    />
   );
 }

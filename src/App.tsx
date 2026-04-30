@@ -24,7 +24,6 @@ export default function App() {
     [cart],
   );
 
-  // Reset state when language/currency reloads bootstrap and category disappears.
   useEffect(() => {
     if (!bootstrap) return;
     if (
@@ -66,9 +65,9 @@ export default function App() {
   };
 
   return (
-    <div className="app-shell">
+    <div className="flex min-h-full flex-col">
       <TopBar cartCount={cartCount} onOpenCart={() => setCartOpen(true)} />
-      <main className="main">
+      <main className="mx-auto grid w-full max-w-[1200px] flex-1 gap-4 p-4 md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
         {view === 'shop' && (
           <>
             <CategoryFilter
@@ -76,18 +75,25 @@ export default function App() {
               activeCategoryId={activeCategory}
               onChange={setActiveCategory}
             />
-            <div className="content">
+            <div className="flex min-w-0 flex-col gap-4">
               <SearchBar value={search} onChange={setSearch} />
               {loading && (
-                <div className="loader-row">
-                  <span className="spinner" aria-hidden="true" />
+                <div className="flex items-center gap-2.5 px-4 py-2 text-sm text-muted-foreground">
+                  <span
+                    aria-hidden="true"
+                    className="inline-block size-5 animate-spin rounded-full border-2 border-border border-t-primary"
+                  />
                   <span>{t('common.loading')}</span>
                 </div>
               )}
               {error && !loading && (
-                <div className="alert alert-error">
-                  <div style={{ flex: 1 }}>{error}</div>
-                  <button type="button" className="btn btn-ghost" onClick={reload}>
+                <div className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3.5 py-3 text-sm text-destructive">
+                  <div className="flex-1">{error}</div>
+                  <button
+                    type="button"
+                    onClick={reload}
+                    className="rounded-md border border-input bg-card px-3 py-1.5 text-sm font-semibold text-foreground hover:bg-muted"
+                  >
                     {t('common.retry')}
                   </button>
                 </div>
@@ -100,13 +106,13 @@ export default function App() {
         )}
 
         {view === 'checkout' && (
-          <div className="content" style={{ gridColumn: '1 / -1' }}>
+          <div className="md:col-span-2">
             <Checkout onBack={() => setView('shop')} onSuccess={handleSuccess} />
           </div>
         )}
 
         {view === 'success' && completedOrder && (
-          <div style={{ gridColumn: '1 / -1' }}>
+          <div className="md:col-span-2">
             <OrderSuccess order={completedOrder} onContinue={handleContinue} />
           </div>
         )}
