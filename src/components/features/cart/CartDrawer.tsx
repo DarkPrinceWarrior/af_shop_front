@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Minus, Plus, X } from 'lucide-react';
 import { useShop } from '@/state/useShop';
 import { formatPrice } from '@/utils/format';
 import { Button } from '@/components/ui/button';
@@ -48,7 +49,7 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
               size="icon"
               aria-label={t('common.close')}
             >
-              ✕
+              <X className="size-4" aria-hidden="true" />
             </Button>
           </SheetClose>
         </SheetHeader>
@@ -99,10 +100,10 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
                           type="button"
                           onClick={() => setQuantity(product.id, line.quantity - 1)}
                           disabled={!canDecrement}
-                          aria-label="-"
+                          aria-label={t('cart.quantity')}
                           className="px-2.5 py-1.5 hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
                         >
-                          −
+                          <Minus className="size-4" aria-hidden="true" />
                         </button>
                         <span className="min-w-8 text-center text-sm font-semibold">
                           {line.quantity}
@@ -111,10 +112,10 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
                           type="button"
                           onClick={() => setQuantity(product.id, line.quantity + 1)}
                           disabled={!canIncrement}
-                          aria-label="+"
+                          aria-label={t('cart.quantity')}
                           className="px-2.5 py-1.5 hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
                         >
-                          +
+                          <Plus className="size-4" aria-hidden="true" />
                         </button>
                       </div>
                       <Button

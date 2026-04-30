@@ -1,3 +1,4 @@
+import { CheckCircle2 } from 'lucide-react';
 import { useShop } from '@/state/useShop';
 import type { OrderResponse } from '@/api/types';
 import { formatPrice } from '@/utils/format';
@@ -12,6 +13,10 @@ export function OrderSuccess({ order, onContinue }: Props) {
   const { language, t } = useShop();
   return (
     <div className="mx-auto my-6 max-w-[480px] rounded-xl border border-border bg-card p-6 text-center shadow-md">
+      <CheckCircle2
+        aria-hidden="true"
+        className="mx-auto mb-3 size-12 text-primary"
+      />
       <h2 className="m-0 mb-2 text-2xl font-semibold text-primary">
         {t('success.title')}
       </h2>

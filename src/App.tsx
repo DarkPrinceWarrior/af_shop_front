@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 import { useShop } from '@/state/useShop';
 import { Button } from '@/components/ui/button';
 import { TopBar } from '@/components/features/layout/TopBar';
@@ -80,9 +81,9 @@ export default function App() {
               <SearchBar value={search} onChange={setSearch} />
               {loading && (
                 <div className="flex items-center gap-2.5 px-4 py-2 text-sm text-muted-foreground">
-                  <span
+                  <Loader2
                     aria-hidden="true"
-                    className="inline-block size-5 animate-spin rounded-full border-2 border-border border-t-primary"
+                    className="size-5 animate-spin text-primary"
                   />
                   <span>{t('common.loading')}</span>
                 </div>

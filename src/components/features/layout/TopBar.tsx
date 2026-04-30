@@ -1,3 +1,4 @@
+import { ShoppingCart } from 'lucide-react';
 import { useShop } from '@/state/useShop';
 import { LANGUAGE_LABELS } from '@/i18n/dict';
 import type { CurrencyCode, LanguageCode } from '@/api/types';
@@ -58,7 +59,7 @@ export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
             aria-label={t('topbar.cart')}
             className="relative inline-flex items-center gap-1.5 rounded-full border border-input bg-card px-3.5 py-2 text-sm hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
           >
-            <span aria-hidden="true">🛒</span>
+            <ShoppingCart aria-hidden="true" className="size-4" />
             <span>{t('topbar.cart')}</span>
             {cartCount > 0 && (
               <span className="ms-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-primary-foreground">

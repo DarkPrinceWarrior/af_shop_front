@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useShop } from '@/state/useShop';
 import { ApiError, createOrder, quoteOrder } from '@/api/client';
 import type { OrderPayload, OrderQuote, OrderResponse } from '@/api/types';
@@ -208,7 +209,8 @@ export function Checkout({ onBack, onSuccess }: Props) {
     <form className="flex flex-col gap-3" onSubmit={handleSubmit} noValidate>
       <div>
         <Button type="button" variant="link" onClick={onBack} className="px-0">
-          ← {t('checkout.back')}
+          <ArrowLeft className="size-4 rtl:rotate-180" aria-hidden="true" />
+          {t('checkout.back')}
         </Button>
         <h2 className="my-2 text-xl font-semibold">{t('checkout.title')}</h2>
       </div>
@@ -400,10 +402,5 @@ function Alert({
 }
 
 function Spinner() {
-  return (
-    <span
-      aria-hidden="true"
-      className="inline-block size-5 animate-spin rounded-full border-2 border-border border-t-primary"
-    />
-  );
+  return <Loader2 aria-hidden="true" className="size-5 animate-spin text-primary" />;
 }

@@ -1,3 +1,4 @@
+import { Minus, Plus } from 'lucide-react';
 import { useShop } from '@/state/useShop';
 import type { CatalogProduct } from '@/api/types';
 import { formatPrice } from '@/utils/format';
@@ -77,10 +78,10 @@ export function ProductCard({ product }: Props) {
                 type="button"
                 onClick={() => setQuantity(product.id, inCart - 1)}
                 disabled={!canDecrement}
-                aria-label="-"
-                className="px-2.5 py-1.5 text-base text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
+                aria-label={t('cart.quantity')}
+                className="px-2.5 py-1.5 text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
               >
-                −
+                <Minus className="size-4" aria-hidden="true" />
               </button>
               <span className="min-w-8 text-center text-sm font-semibold">
                 {inCart}
@@ -89,10 +90,10 @@ export function ProductCard({ product }: Props) {
                 type="button"
                 onClick={() => setQuantity(product.id, inCart + 1)}
                 disabled={!canIncrement}
-                aria-label="+"
-                className="px-2.5 py-1.5 text-base text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
+                aria-label={t('cart.quantity')}
+                className="px-2.5 py-1.5 text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
               >
-                +
+                <Plus className="size-4" aria-hidden="true" />
               </button>
             </div>
           )}
