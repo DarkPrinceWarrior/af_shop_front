@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import { ShopProvider } from './state/store';
+import { ShopProvider } from '@/state/store';
 import './styles/globals.css';
 
 const container = document.getElementById('root');

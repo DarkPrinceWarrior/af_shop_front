@@ -11,9 +11,9 @@ import type {
   CatalogProduct,
   CurrencyCode,
   LanguageCode,
-} from '../api/types';
-import { fetchBootstrap, ApiError } from '../api/client';
-import { RTL_LANGUAGES, translate } from '../i18n/dict';
+} from '@/api/types';
+import { fetchBootstrap, ApiError } from '@/api/client';
+import { RTL_LANGUAGES, translate } from '@/i18n/dict';
 import { ShopContext, type CartLine, type ShopState } from './context';
 
 const STORAGE_KEY = 'shop-meraj.preferences';

@@ -1,6 +1,6 @@
-import { useShop } from '../state/useShop';
-import type { OrderResponse } from '../api/types';
-import { formatPrice } from '../utils/format';
+import { useShop } from '@/state/useShop';
+import type { OrderResponse } from '@/api/types';
+import { formatPrice } from '@/utils/format';
 
 interface Props {
   order: OrderResponse;

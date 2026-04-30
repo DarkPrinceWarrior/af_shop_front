@@ -1,4 +1,4 @@
-import type { LanguageCode } from '../api/types';
+import type { LanguageCode } from '@/api/types';
 
 export const LANGUAGE_LABELS: Record<LanguageCode, string> = {
   en: 'English',

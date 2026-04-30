@@ -1,6 +1,6 @@
-import { useShop } from '../state/useShop';
-import { LANGUAGE_LABELS } from '../i18n/dict';
-import type { CurrencyCode, LanguageCode } from '../api/types';
+import { useShop } from '@/state/useShop';
+import { LANGUAGE_LABELS } from '@/i18n/dict';
+import type { CurrencyCode, LanguageCode } from '@/api/types';
 
 interface TopBarProps {
   cartCount: number;

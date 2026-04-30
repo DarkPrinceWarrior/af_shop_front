@@ -4,8 +4,8 @@ import type {
   CatalogProduct,
   CurrencyCode,
   LanguageCode,
-} from '../api/types';
-import type { TranslationKey } from '../i18n/dict';
+} from '@/api/types';
+import type { TranslationKey } from '@/i18n/dict';
 
 export interface CartLine {
   productId: string;

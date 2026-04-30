@@ -1,4 +1,4 @@
-import type { CurrencyCode, LanguageCode } from '../api/types';
+import type { CurrencyCode, LanguageCode } from '@/api/types';
 
 const LOCALE_MAP: Record<LanguageCode, string> = {
   en: 'en-US',

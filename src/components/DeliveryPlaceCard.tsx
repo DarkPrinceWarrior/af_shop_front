@@ -1,6 +1,6 @@
-import { useShop } from '../state/useShop';
-import type { CatalogDeliveryPlace } from '../api/types';
-import { formatPrice } from '../utils/format';
+import { useShop } from '@/state/useShop';
+import type { CatalogDeliveryPlace } from '@/api/types';
+import { formatPrice } from '@/utils/format';
 import { ProductImage } from './Image';
 
 interface Props {

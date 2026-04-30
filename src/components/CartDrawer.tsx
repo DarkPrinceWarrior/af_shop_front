@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import { useShop } from '../state/useShop';
-import { formatPrice } from '../utils/format';
+import { useShop } from '@/state/useShop';
+import { formatPrice } from '@/utils/format';
 import { ProductImage } from './Image';
 
 interface Props {

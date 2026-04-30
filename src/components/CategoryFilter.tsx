@@ -1,5 +1,5 @@
-import { useShop } from '../state/useShop';
-import type { CatalogCategory } from '../api/types';
+import { useShop } from '@/state/useShop';
+import type { CatalogCategory } from '@/api/types';
 
 interface Props {
   categories: CatalogCategory[];

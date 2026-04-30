@@ -1,4 +1,4 @@
-import { useShop } from '../state/useShop';
+import { useShop } from '@/state/useShop';
 
 interface Props {
   value: string;

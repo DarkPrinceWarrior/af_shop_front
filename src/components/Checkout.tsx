@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useShop } from '../state/useShop';
-import { ApiError, createOrder, quoteOrder } from '../api/client';
-import type { OrderPayload, OrderQuote, OrderResponse } from '../api/types';
-import { formatPrice } from '../utils/format';
+import { useShop } from '@/state/useShop';
+import { ApiError, createOrder, quoteOrder } from '@/api/client';
+import type { OrderPayload, OrderQuote, OrderResponse } from '@/api/types';
+import { formatPrice } from '@/utils/format';
 import { DeliveryPlaceCard } from './DeliveryPlaceCard';
 
 interface Props {

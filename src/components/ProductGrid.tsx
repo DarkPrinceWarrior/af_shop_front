@@ -1,6 +1,6 @@
-import type { CatalogProduct } from '../api/types';
+import type { CatalogProduct } from '@/api/types';
 import { ProductCard } from './ProductCard';
-import { useShop } from '../state/useShop';
+import { useShop } from '@/state/useShop';
 
 interface Props {
   products: CatalogProduct[];

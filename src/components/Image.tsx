@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { resolveMediaUrl } from '../api/client';
+import { resolveMediaUrl } from '@/api/client';
 
 interface ImageProps {
   path: string | null | undefined;
