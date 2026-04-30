@@ -2,7 +2,7 @@ import { useShop } from '@/state/useShop';
 import type { CatalogDeliveryPlace } from '@/api/types';
 import { formatPrice } from '@/utils/format';
 import { cn } from '@/lib/utils';
-import { ProductImage } from './Image';
+import { ProductImage } from '@/components/features/layout/Image';
 
 interface Props {
   place: CatalogDeliveryPlace;

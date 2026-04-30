@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useShop } from '@/state/useShop';
 import { Button } from '@/components/ui/button';
-import { TopBar } from '@/components/TopBar';
-import { CategoryFilter } from '@/components/CategoryFilter';
-import { SearchBar } from '@/components/SearchBar';
-import { ProductGrid } from '@/components/ProductGrid';
-import { CartDrawer } from '@/components/CartDrawer';
-import { Checkout } from '@/components/Checkout';
-import { OrderSuccess } from '@/components/OrderSuccess';
+import { TopBar } from '@/components/features/layout/TopBar';
+import { CategoryFilter } from '@/components/features/catalog/CategoryFilter';
+import { SearchBar } from '@/components/features/catalog/SearchBar';
+import { ProductGrid } from '@/components/features/catalog/ProductGrid';
+import { CartDrawer } from '@/components/features/cart/CartDrawer';
+import { Checkout } from '@/components/features/checkout/Checkout';
+import { OrderSuccess } from '@/components/features/checkout/OrderSuccess';
 import type { OrderResponse } from '@/api/types';
 
 type View = 'shop' | 'checkout' | 'success';

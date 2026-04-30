@@ -3,7 +3,7 @@ import type { CatalogProduct } from '@/api/types';
 import { formatPrice } from '@/utils/format';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { ProductImage } from './Image';
+import { ProductImage } from '@/components/features/layout/Image';
 
 interface Props {
   product: CatalogProduct;

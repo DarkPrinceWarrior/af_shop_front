@@ -10,7 +10,7 @@ import {
   SheetFooter,
   SheetClose,
 } from '@/components/ui/sheet';
-import { ProductImage } from './Image';
+import { ProductImage } from '@/components/features/layout/Image';
 
 interface Props {
   open: boolean;
