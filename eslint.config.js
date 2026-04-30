@@ -29,4 +29,12 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // shadcn primitives co-locate cva variants alongside components — relax react-refresh
+    // for these files since they are not edited at runtime via HMR anyway.
+    files: ['src/components/ui/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 );

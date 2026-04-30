@@ -1,27 +1,26 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useShop } from '@/state/useShop';
 import { formatPrice } from '@/utils/format';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetFooter,
+  SheetClose,
+} from '@/components/ui/sheet';
 import { ProductImage } from './Image';
 
 interface Props {
   open: boolean;
-  onClose: () => void;
+  onOpenChange: (open: boolean) => void;
   onCheckout: () => void;
 }
 
-export function CartDrawer({ open, onClose, onCheckout }: Props) {
+export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
   const { cart, productMap, language, currency, setQuantity, removeFromCart, t } =
     useShop();
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [open, onClose]);
 
   const lines = useMemo(
     () =>
@@ -37,35 +36,22 @@ export function CartDrawer({ open, onClose, onCheckout }: Props) {
     [lines],
   );
 
-  if (!open) return null;
-
   return (
-    <>
-      <div
-        className="fixed inset-0 z-40 bg-black/45 animate-in fade-in duration-150"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-      <aside
-        className={cn(
-          'fixed bottom-0 top-0 end-0 z-50 flex w-[min(440px,100%)] flex-col bg-card shadow-xl',
-          'animate-in slide-in-from-end duration-200',
-        )}
-        role="dialog"
-        aria-modal="true"
-        aria-label={t('cart.title')}
-      >
-        <div className="flex items-center justify-between border-b border-border p-4">
-          <h2 className="m-0 text-lg font-semibold">{t('cart.title')}</h2>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label={t('common.close')}
-            className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
-          >
-            ✕
-          </button>
-        </div>
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="right" aria-label={t('cart.title')}>
+        <SheetHeader>
+          <SheetTitle>{t('cart.title')}</SheetTitle>
+          <SheetClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label={t('common.close')}
+            >
+              ✕
+            </Button>
+          </SheetClose>
+        </SheetHeader>
 
         <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
           {lines.length === 0 ? (
@@ -131,13 +117,14 @@ export function CartDrawer({ open, onClose, onCheckout }: Props) {
                           +
                         </button>
                       </div>
-                      <button
+                      <Button
                         type="button"
+                        variant="link"
+                        size="sm"
                         onClick={() => removeFromCart(product.id)}
-                        className="text-sm text-primary underline-offset-2 hover:underline"
                       >
                         {t('cart.remove')}
-                      </button>
+                      </Button>
                     </div>
                     {!canIncrement && (
                       <span className="text-xs text-muted-foreground">
@@ -151,28 +138,29 @@ export function CartDrawer({ open, onClose, onCheckout }: Props) {
           )}
         </div>
 
-        <div className="flex flex-col gap-2 border-t border-border bg-card p-4">
+        <SheetFooter>
           <div className="flex justify-between text-base font-bold">
             <span>{t('cart.subtotal')}</span>
             <span>{formatPrice(subtotal.toFixed(2), currency, language)}</span>
           </div>
-          <button
+          <Button
             type="button"
             onClick={onCheckout}
             disabled={lines.length === 0}
-            className="w-full rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-primary/40"
+            className="w-full"
           >
             {t('cart.checkout')}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            onClick={onClose}
-            className="w-full rounded-md border border-input bg-card px-3.5 py-2.5 text-sm font-semibold hover:bg-muted"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            className="w-full"
           >
             {t('cart.continueShopping')}
-          </button>
-        </div>
-      </aside>
-    </>
+          </Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 }

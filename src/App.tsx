@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useShop } from '@/state/useShop';
+import { Button } from '@/components/ui/button';
 import { TopBar } from '@/components/TopBar';
 import { CategoryFilter } from '@/components/CategoryFilter';
 import { SearchBar } from '@/components/SearchBar';
@@ -89,13 +90,9 @@ export default function App() {
               {error && !loading && (
                 <div className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3.5 py-3 text-sm text-destructive">
                   <div className="flex-1">{error}</div>
-                  <button
-                    type="button"
-                    onClick={reload}
-                    className="rounded-md border border-input bg-card px-3 py-1.5 text-sm font-semibold text-foreground hover:bg-muted"
-                  >
+                  <Button type="button" variant="outline" size="sm" onClick={reload}>
                     {t('common.retry')}
-                  </button>
+                  </Button>
                 </div>
               )}
               {!loading && !error && bootstrap && (
@@ -120,7 +117,7 @@ export default function App() {
 
       <CartDrawer
         open={cartOpen}
-        onClose={() => setCartOpen(false)}
+        onOpenChange={setCartOpen}
         onCheckout={handleCheckout}
       />
     </div>

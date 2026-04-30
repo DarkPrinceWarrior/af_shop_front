@@ -4,6 +4,10 @@ import { ApiError, createOrder, quoteOrder } from '@/api/client';
 import type { OrderPayload, OrderQuote, OrderResponse } from '@/api/types';
 import { formatPrice } from '@/utils/format';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { DeliveryPlaceCard } from './DeliveryPlaceCard';
 
 interface Props {
@@ -27,11 +31,7 @@ const INITIAL_FORM: FormState = {
   delivery_place_id: null,
 };
 
-const SECTION =
-  'rounded-lg border border-border bg-card p-4 shadow-sm';
-const FIELD_INPUT =
-  'w-full rounded-md border border-input bg-card px-3 py-2.5 text-[15px] focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring';
-const FIELD_INPUT_INVALID = 'border-destructive focus:border-destructive';
+const SECTION = 'rounded-lg border border-border bg-card p-4 shadow-sm';
 
 export function Checkout({ onBack, onSuccess }: Props) {
   const {
@@ -59,7 +59,6 @@ export function Checkout({ onBack, onSuccess }: Props) {
     [bootstrap],
   );
 
-  // Auto-select the first delivery place once data is available.
   useEffect(() => {
     if (form.delivery_place_id) return;
     const first = deliveryPlaces[0];
@@ -86,7 +85,6 @@ export function Checkout({ onBack, onSuccess }: Props) {
     [cart, productMap],
   );
 
-  // Re-quote whenever cart, delivery, or currency/language changes.
   useEffect(() => {
     if (!form.delivery_place_id || itemsPayload.length === 0) {
       setQuote(null);
@@ -199,13 +197,9 @@ export function Checkout({ onBack, onSuccess }: Props) {
     return (
       <div className={SECTION}>
         <p>{t('checkout.requireItems')}</p>
-        <button
-          type="button"
-          onClick={onBack}
-          className="rounded-md border border-input bg-card px-3.5 py-2.5 text-sm font-semibold hover:bg-muted"
-        >
+        <Button type="button" variant="outline" onClick={onBack}>
           {t('checkout.back')}
-        </button>
+        </Button>
       </div>
     );
   }
@@ -213,31 +207,35 @@ export function Checkout({ onBack, onSuccess }: Props) {
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit} noValidate>
       <div>
-        <button
-          type="button"
-          onClick={onBack}
-          className="text-sm text-primary underline-offset-2 hover:underline"
-        >
+        <Button type="button" variant="link" onClick={onBack} className="px-0">
           ← {t('checkout.back')}
-        </button>
+        </Button>
         <h2 className="my-2 text-xl font-semibold">{t('checkout.title')}</h2>
       </div>
 
       <section className={SECTION}>
         <h3 className="mb-3 text-[15px] font-semibold">{t('checkout.customer')}</h3>
-        <Field label={`${t('checkout.name')} *`} invalid={!!nameInvalid}>
-          <input
+        <Field
+          htmlFor="customer_name"
+          label={`${t('checkout.name')} *`}
+          invalid={!!nameInvalid}
+        >
+          <Input
             id="customer_name"
             value={form.customer_name}
             onChange={handleField('customer_name')}
             onBlur={handleBlur('customer_name')}
             autoComplete="name"
             required
-            className={cn(FIELD_INPUT, nameInvalid && FIELD_INPUT_INVALID)}
+            aria-invalid={!!nameInvalid}
           />
         </Field>
-        <Field label={`${t('checkout.phone')} *`} invalid={!!phoneInvalid}>
-          <input
+        <Field
+          htmlFor="customer_phone"
+          label={`${t('checkout.phone')} *`}
+          invalid={!!phoneInvalid}
+        >
+          <Input
             id="customer_phone"
             type="tel"
             value={form.customer_phone}
@@ -245,24 +243,26 @@ export function Checkout({ onBack, onSuccess }: Props) {
             onBlur={handleBlur('customer_phone')}
             autoComplete="tel"
             required
-            className={cn(FIELD_INPUT, phoneInvalid && FIELD_INPUT_INVALID)}
+            aria-invalid={!!phoneInvalid}
           />
         </Field>
-        <Field label={t('checkout.telegram')} hint={t('checkout.telegramHint')}>
-          <input
+        <Field
+          htmlFor="customer_telegram"
+          label={t('checkout.telegram')}
+          hint={t('checkout.telegramHint')}
+        >
+          <Input
             id="customer_telegram"
             value={form.customer_telegram}
             onChange={handleField('customer_telegram')}
             placeholder="@username"
-            className={FIELD_INPUT}
           />
         </Field>
-        <Field label={t('checkout.comment')}>
-          <textarea
+        <Field htmlFor="customer_comment" label={t('checkout.comment')}>
+          <Textarea
             id="customer_comment"
             value={form.customer_comment}
             onChange={handleField('customer_comment')}
-            className={cn(FIELD_INPUT, 'min-h-[88px] resize-y')}
           />
         </Field>
       </section>
@@ -320,23 +320,21 @@ export function Checkout({ onBack, onSuccess }: Props) {
 
       {error && <Alert variant="error">{error}</Alert>}
 
-      <button
-        type="submit"
-        disabled={!canSubmit}
-        className="w-full rounded-md bg-primary px-3.5 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:bg-primary/40 disabled:cursor-not-allowed"
-      >
+      <Button type="submit" disabled={!canSubmit} size="lg" className="w-full">
         {submitting ? t('checkout.placing') : t('checkout.placeOrder')}
-      </button>
+      </Button>
     </form>
   );
 }
 
 function Field({
+  htmlFor,
   label,
   hint,
   children,
   invalid,
 }: {
+  htmlFor: string;
   label: string;
   hint?: string;
   invalid?: boolean;
@@ -344,9 +342,12 @@ function Field({
 }) {
   return (
     <div className="mb-3 flex flex-col gap-1 last:mb-0">
-      <label className={cn('text-[13px] font-semibold', invalid ? 'text-destructive' : 'text-muted-foreground')}>
+      <Label
+        htmlFor={htmlFor}
+        className={invalid ? 'text-destructive' : 'text-muted-foreground'}
+      >
         {label}
-      </label>
+      </Label>
       {children}
       {hint && <span className="text-xs text-muted-foreground">{hint}</span>}
     </div>
@@ -385,6 +386,7 @@ function Alert({
   return (
     <div
       role="status"
+      aria-live="polite"
       className={cn(
         'flex items-start gap-2 rounded-lg border px-3.5 py-3 text-sm leading-snug',
         variant === 'error'

@@ -2,6 +2,7 @@ import { useShop } from '@/state/useShop';
 import type { CatalogProduct } from '@/api/types';
 import { formatPrice } from '@/utils/format';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { ProductImage } from './Image';
 
 interface Props {
@@ -58,14 +59,14 @@ export function ProductCard({ product }: Props) {
         </div>
         <div className="mt-2 flex items-center gap-1.5">
           {inCart === 0 ? (
-            <button
+            <Button
               type="button"
               onClick={() => addToCart(product.id, 1)}
               disabled={outOfStock}
-              className="inline-flex w-full items-center justify-center rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-primary/40"
+              className="w-full"
             >
               {outOfStock ? t('product.outOfStock') : t('product.addToCart')}
-            </button>
+            </Button>
           ) : (
             <div
               className="inline-flex items-center overflow-hidden rounded-md border border-input bg-card"

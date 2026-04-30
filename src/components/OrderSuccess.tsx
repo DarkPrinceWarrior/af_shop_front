@@ -1,6 +1,7 @@
 import { useShop } from '@/state/useShop';
 import type { OrderResponse } from '@/api/types';
 import { formatPrice } from '@/utils/format';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   order: OrderResponse;
@@ -24,13 +25,9 @@ export function OrderSuccess({ order, onContinue }: Props) {
         {t('success.total')}: {formatPrice(order.total, order.currency, language)}
       </div>
       <p className="my-3 text-muted-foreground">{t('success.note')}</p>
-      <button
-        type="button"
-        onClick={onContinue}
-        className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
-      >
+      <Button type="button" onClick={onContinue}>
         {t('success.continue')}
-      </button>
+      </Button>
     </div>
   );
 }
