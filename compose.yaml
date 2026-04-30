@@ -1,0 +1,11 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
+    image: shop-meraj-front:local
+    container_name: shop-meraj-front
+    restart: unless-stopped
+    ports:
+      - "5173:80"
