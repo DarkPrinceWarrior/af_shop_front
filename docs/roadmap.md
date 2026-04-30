@@ -10,11 +10,12 @@
 | # | Этап | Статус | Где живёт |
 |---|---|---|---|
 | 0 | MVP storefront (Vite + React + TS, i18n, корзина, checkout, Docker) | ✅ done | `af_shop_front`, коммит `1c0c44b` |
+| 0.5 | Phase 0.5: Tailwind 4 + shadcn + Router 7 + Vitest + lucide + alias + folder restructure | ✅ done | `af_shop_front`, коммиты `a97936f..c074753` |
 | 1 | Единый Docker Compose в корне `shop_meraj/` | ✅ done | `af_shop`, коммит `9e41178` |
-| 2 | Визуальная проверка end‑to‑end | 🟡 pending | этот документ |
-| 3 | Telegram‑уведомления при заказе | 🟡 pending | требует токенов |
+| 2 | Визуальная проверка end‑to‑end | 🟡 pending | через браузер вручную или Playwright |
+| 3 | Telegram‑уведомления при заказе | ✅ done | smoke‑order `SM-20260430194114-7EBAB0`, токены в root `.env` |
 | 4 | Реальные изображения товаров и мест доставки | 🟡 pending | `back/media/` |
-| 5 | Тесты во фронте (Vitest + Playwright) | 🟡 pending | `front/` |
+| 5 | Тесты во фронте (Vitest + Playwright) | 🟢 partial | Vitest baseline есть; Playwright e2e — нет |
 | 6 | A11y / UX‑полировка drawer и форм | 🟡 pending | `front/src/components/` |
 | 7 | Production deployment plan | ⚪ later | TBD |
 
