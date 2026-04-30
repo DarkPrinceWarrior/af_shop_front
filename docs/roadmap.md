@@ -14,7 +14,7 @@
 | 1 | Единый Docker Compose в корне `shop_meraj/` | ✅ done | `af_shop`, коммит `9e41178` |
 | 2 | Визуальная проверка end‑to‑end | 🟡 pending | через браузер вручную или Playwright |
 | 3 | Telegram‑уведомления при заказе | ✅ done | smoke‑order `SM-20260430194114-7EBAB0`, токены в root `.env` |
-| 4 | Реальные изображения товаров и мест доставки | 🟡 pending | `back/media/` |
+| 4 | Реальные изображения товаров и мест доставки | ✅ done | volume `shop_meraj_media_data`; 4 продукта (Unsplash/Pexels/Pixabay) + 10 camps (Picsum) |
 | 5 | Тесты во фронте (Vitest + Playwright) | 🟢 partial | Vitest baseline есть; Playwright e2e — нет |
 | 6 | A11y / UX‑полировка drawer и форм | 🟡 pending | `front/src/components/` |
 | 7 | Production deployment plan | ⚪ later | TBD |
