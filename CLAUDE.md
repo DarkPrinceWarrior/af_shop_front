@@ -21,6 +21,7 @@ npm run lint         # eslint --max-warnings 0  (treats warnings as errors)
 npm run typecheck    # tsc -b --noEmit
 npm run test         # vitest (watch)
 npm run test:run     # vitest run (CI / pre-commit)
+npm run test:e2e     # playwright test (requires docker stack on :5173)
 
 # Docker (multi-stage: node build → nginx runtime)
 # Prefer the unified compose at ../shop_meraj/compose.yaml.
@@ -119,6 +120,18 @@ Existing baseline tests:
 - `src/state/store.test.tsx` — `addToCart` / `setQuantity` stock-cap invariants.
 
 Add new tests next to the file under test (`*.test.ts(x)`).
+
+### Playwright E2E
+
+`@playwright/test` runs against the live docker stack — `playwright.config.ts`
+points at `http://localhost:5173` (override with `E2E_BASE_URL`) and does NOT
+spin up its own dev server. Bring the stack up first via `docker compose up -d`
+from `../`. Specs live in `e2e/` (excluded from Vitest via `vitest.config.ts`).
+
+Existing specs:
+- `e2e/checkout.spec.ts` — full happy path; creates a real order in Postgres.
+- `e2e/stock-cap.spec.ts` — `+` button disables once the cart hits `stock_quantity`.
+- `e2e/rtl.spec.ts` — switching language to `ps` flips `html[dir="rtl"]`.
 
 ## Configuration
 

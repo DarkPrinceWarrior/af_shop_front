@@ -12,10 +12,10 @@
 | 0 | MVP storefront (Vite + React + TS, i18n, корзина, checkout, Docker) | ✅ done | `af_shop_front`, коммит `1c0c44b` |
 | 0.5 | Phase 0.5: Tailwind 4 + shadcn + Router 7 + Vitest + lucide + alias + folder restructure | ✅ done | `af_shop_front`, коммиты `a97936f..c074753` |
 | 1 | Единый Docker Compose в корне `shop_meraj/` | ✅ done | `af_shop`, коммит `9e41178` |
-| 2 | Визуальная проверка end‑to‑end | 🟡 pending | через браузер вручную или Playwright |
+| 2 | Визуальная проверка end‑to‑end | ✅ done | покрыто Playwright‑прогоном из №5 (`e2e/checkout.spec.ts`, `e2e/rtl.spec.ts`, `e2e/stock-cap.spec.ts`) |
 | 3 | Telegram‑уведомления при заказе | ✅ done | smoke‑order `SM-20260430194114-7EBAB0`, токены в root `.env` |
 | 4 | Реальные изображения товаров и мест доставки | ✅ done | volume `shop_meraj_media_data`; 4 продукта (Unsplash/Pexels/Pixabay) + 10 camps (Picsum) |
-| 5 | Тесты во фронте (Vitest + Playwright) | 🟢 partial | Vitest baseline есть; Playwright e2e — нет |
+| 5 | Тесты во фронте (Vitest + Playwright) | ✅ done | Vitest 16 passed; Playwright e2e 3 passed (chromium) |
 | 6 | A11y / UX‑полировка drawer и форм | 🟡 pending | `front/src/components/` |
 | 7 | Production deployment plan | ⚪ later | TBD |
 
@@ -107,25 +107,29 @@ npm run test          # watch
 npm run test:run      # CI
 ```
 
-### Playwright E2E
+### Playwright E2E ✅
+
+Файлы: `front/e2e/*.spec.ts`. Конфиг: `front/playwright.config.ts`
+(`baseURL=http://localhost:5173`, проект `chromium`, последовательный запуск).
+Стек должен быть запущен через `docker compose up -d` из `shop_meraj/` —
+конфиг не поднимает свой dev‑сервер.
 
 Сценарии:
 
-1. Catalog → cart → delivery → checkout → success (en/AFN).
-2. Stock cap: `+` блокируется, корзина не превышает `stock_quantity`.
-3. RTL: `html[dir="rtl"]` устанавливается на `ps`.
+1. `e2e/checkout.spec.ts` — Catalog → cart → checkout → success (en/AFN), создаёт реальный заказ в Postgres.
+2. `e2e/stock-cap.spec.ts` — добавляем первый товар в корзину, кликаем `+` до `stock_quantity`, проверяем что кнопка disabled.
+3. `e2e/rtl.spec.ts` — переключение языка на `ps` ставит `html[dir="rtl"]` и `lang="ps"`.
 
 Команды:
 ```bash
-npm i -D @playwright/test
-npx playwright install chromium
-npx playwright test
+npm run test:e2e        # === npx playwright test
+npx playwright show-report
 ```
 
 **Verify**:
-- `npm run test:run` — все юниты зелёные.
-- `npx playwright test` — три сценария зелёные на Chromium.
-- В CI gate (если будет): `lint → typecheck → test:run → build`.
+- `npm run test:run` — все юниты зелёные (16/16).
+- `npm run test:e2e` — три сценария зелёные на Chromium.
+- Pre‑commit gate: `lint → typecheck → build → test:run` (e2e — отдельно, требует поднятого стека).
 
 ---
 
