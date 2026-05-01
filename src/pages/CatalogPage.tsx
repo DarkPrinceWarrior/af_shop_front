@@ -56,7 +56,7 @@ export default function CatalogPage() {
         )}
         {error && !loading && (
           <div
-            className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3.5 py-3 text-sm text-destructive"
+            className="flex items-start gap-2 rounded-xl bg-destructive-soft px-4 py-3 text-sm text-destructive"
             role="alert"
           >
             <div className="flex-1">{error}</div>

@@ -18,11 +18,11 @@ export function DeliveryPlaceCard({ place, selected, onSelect }: Props) {
       onClick={() => onSelect(place.id)}
       aria-pressed={selected}
       className={cn(
-        'flex flex-col overflow-hidden rounded-lg border-2 bg-card text-start transition-all',
+        'flex flex-col overflow-hidden rounded-xl border-2 bg-card text-start transition-all',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         selected
-          ? 'border-primary shadow-[0_0_0_3px_oklch(0.475_0.13_152_/_0.18)]'
-          : 'border-border hover:border-input',
+          ? 'border-primary shadow-[0_0_0_3px_var(--primary-soft)]'
+          : 'border-border hover:border-[var(--neutral-300)]',
       )}
     >
       <ProductImage
@@ -31,8 +31,10 @@ export function DeliveryPlaceCard({ place, selected, onSelect }: Props) {
         fallbackLabel={t('common.noImage')}
         className="aspect-video w-full bg-muted"
       />
-      <div className="flex flex-1 flex-col gap-1 p-3">
-        <span className="text-sm font-semibold">{place.name}</span>
+      <div className="flex flex-1 flex-col gap-1 p-4">
+        <span className="font-display text-[15px] font-medium tracking-tight">
+          {place.name}
+        </span>
         {place.description && (
           <span className="text-[13px] leading-snug text-muted-foreground">
             {place.description}

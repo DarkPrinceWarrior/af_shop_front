@@ -12,25 +12,29 @@ interface Props {
 export function OrderSuccess({ order, onContinue }: Props) {
   const { language, t } = useShop();
   return (
-    <div className="mx-auto my-6 max-w-[480px] rounded-xl border border-border bg-card p-6 text-center shadow-md">
-      <CheckCircle2
-        aria-hidden="true"
-        className="mx-auto mb-3 size-12 text-primary"
-      />
-      <h2 className="m-0 mb-2 text-2xl font-semibold text-primary">
+    <div className="mx-auto my-6 max-w-[480px] rounded-2xl border border-border bg-card p-8 text-center">
+      <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-[var(--primary-soft)]">
+        <CheckCircle2 aria-hidden="true" className="size-8 text-primary" />
+      </div>
+      <h2 className="m-0 mb-2 font-display text-2xl font-medium tracking-tighter">
         {t('success.title')}
       </h2>
-      <p className="m-0">
-        <strong>{t('success.orderNumber')}</strong>
+      <p className="m-0 text-sm text-muted-foreground">
+        {t('success.orderNumber')}
       </p>
-      <div className="mt-2 inline-block break-all rounded-md bg-muted px-3 py-2 font-mono text-base">
+      <div className="mt-2 inline-block break-all rounded-full bg-[var(--button-neutral-bg)] px-4 py-2 font-mono text-base">
         {order.order_number}
       </div>
-      <div className="mt-3 text-lg font-bold">
-        {t('success.total')}: {formatPrice(order.total, order.currency, language)}
+      <div className="mt-4 font-display text-3xl font-medium tracking-tighter">
+        {formatPrice(order.total, order.currency, language)}
       </div>
-      <p className="my-3 text-muted-foreground">{t('success.note')}</p>
-      <Button type="button" onClick={onContinue}>
+      <p className="my-4 text-sm text-muted-foreground">{t('success.note')}</p>
+      <Button
+        type="button"
+        onClick={onContinue}
+        size="lg"
+        className="rounded-full px-8"
+      >
         {t('success.continue')}
       </Button>
     </div>

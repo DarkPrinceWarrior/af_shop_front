@@ -28,7 +28,7 @@ export default function Layout() {
   return (
     <div className="flex min-h-full flex-col">
       <TopBar cartCount={cartCount} onOpenCart={() => setCartOpen(true)} />
-      <main className="mx-auto grid w-full max-w-[1200px] flex-1 gap-4 p-4 md:grid-cols-[220px_minmax(0,1fr)] md:items-start">
+      <main className="mx-auto grid w-full max-w-[1200px] flex-1 gap-6 px-5 py-6 md:grid-cols-[240px_minmax(0,1fr)] md:items-start">
         <Outlet />
       </main>
       <CartDrawer

@@ -9,8 +9,8 @@ interface TopBarProps {
 }
 
 const SELECT_PILL =
-  'appearance-none rounded-full border border-input bg-card py-2 pe-7 ps-3 text-sm cursor-pointer ' +
-  'hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring';
+  'appearance-none rounded-full bg-[var(--button-neutral-bg)] backdrop-blur-xl py-2 pe-7 ps-3 text-sm font-medium cursor-pointer ' +
+  'hover:bg-[var(--neutral-200)] focus:outline-none focus:ring-2 focus:ring-ring';
 
 export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
   const { language, currency, bootstrap, setLanguage, setCurrency, t } = useShop();
@@ -20,11 +20,14 @@ export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
 
   return (
     <header
-      className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur shadow-sm"
+      className="sticky top-0 z-30 border-b border-border bg-card/80 backdrop-blur-xl"
       role="banner"
     >
-      <div className="mx-auto flex min-h-14 max-w-[1200px] items-center gap-3 px-4 py-2">
-        <div className="text-lg font-bold tracking-tight whitespace-nowrap">
+      <div className="mx-auto flex min-h-16 max-w-[1200px] items-center gap-3 px-5 py-3">
+        <div
+          className="font-display text-xl font-medium tracking-tighter whitespace-nowrap"
+          style={{ letterSpacing: '-0.025em' }}
+        >
           {t('app.title')}
         </div>
         <div className="flex-1" />
@@ -57,7 +60,7 @@ export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
             type="button"
             onClick={onOpenCart}
             aria-label={t('topbar.cart')}
-            className="relative inline-flex items-center gap-1.5 rounded-full border border-input bg-card px-3.5 py-2 text-sm hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+            className="relative inline-flex items-center gap-1.5 rounded-full bg-[var(--button-neutral-bg)] backdrop-blur-xl px-3.5 py-2 text-sm font-medium hover:bg-[var(--neutral-200)] focus:outline-none focus:ring-2 focus:ring-ring"
           >
             <ShoppingCart aria-hidden="true" className="size-4" />
             <span>{t('topbar.cart')}</span>

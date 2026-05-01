@@ -25,52 +25,57 @@ export function ProductCard({ product }: Props) {
   const canIncrement = inCart < stock;
   const canDecrement = inCart > 0;
 
+  const stockTone = outOfStock
+    ? 'bg-destructive-soft text-destructive'
+    : lowStock
+      ? 'bg-warning-soft text-warning'
+      : 'bg-[var(--button-neutral-bg)] text-muted-foreground';
+
   return (
-    <article className="flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-sm">
-      <ProductImage
-        path={primaryImage?.image_path}
-        alt={primaryImage?.alt || product.name}
-        fallbackLabel={t('common.noImage')}
-      />
-      <div className="flex flex-1 flex-col gap-1.5 p-3">
-        <h3 className="m-0 text-[15px] font-semibold leading-snug break-words">
-          {product.name}
-        </h3>
+    <article className="group flex flex-col overflow-hidden rounded-xl bg-card border border-border transition-colors hover:border-[var(--neutral-300)]">
+      <div className="overflow-hidden rounded-xl">
+        <ProductImage
+          path={primaryImage?.image_path}
+          alt={primaryImage?.alt || product.name}
+          fallbackLabel={t('common.noImage')}
+        />
+      </div>
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="m-0 font-display text-[19px] font-medium leading-tight tracking-tight break-words">
+            {product.name}
+          </h3>
+          <span
+            className={cn(
+              'shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium',
+              stockTone,
+            )}
+          >
+            {stockLabel}
+          </span>
+        </div>
         {product.description && (
           <p className="m-0 line-clamp-2 text-[13px] leading-snug text-muted-foreground">
             {product.description}
           </p>
         )}
-        <div className="mt-auto flex items-baseline justify-between gap-2 pt-1.5">
-          <div className="text-base font-bold text-primary">
+        <div className="mt-auto flex items-end justify-between gap-3 pt-2">
+          <div className="font-display text-[26px] font-medium leading-none tracking-tighter">
             {formatPrice(product.price, currency, language)}
           </div>
-          <div
-            className={cn(
-              'text-xs',
-              outOfStock
-                ? 'text-destructive'
-                : lowStock
-                  ? 'text-warning'
-                  : 'text-muted-foreground',
-            )}
-          >
-            {stockLabel}
-          </div>
-        </div>
-        <div className="mt-2 flex items-center gap-1.5">
           {inCart === 0 ? (
             <Button
               type="button"
               onClick={() => addToCart(product.id, 1)}
               disabled={outOfStock}
-              className="w-full"
+              size="sm"
+              className="rounded-full px-4"
             >
               {outOfStock ? t('product.outOfStock') : t('product.addToCart')}
             </Button>
           ) : (
             <div
-              className="inline-flex items-center overflow-hidden rounded-md border border-input bg-card"
+              className="inline-flex items-center gap-0.5 overflow-hidden rounded-full bg-[var(--button-neutral-bg)] backdrop-blur-xl"
               role="group"
               aria-label={t('cart.quantity')}
             >
@@ -79,11 +84,11 @@ export function ProductCard({ product }: Props) {
                 onClick={() => setQuantity(product.id, inCart - 1)}
                 disabled={!canDecrement}
                 aria-label={t('cart.quantity')}
-                className="px-2.5 py-1.5 text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
+                className="flex size-9 items-center justify-center text-foreground hover:bg-[var(--neutral-200)] disabled:cursor-not-allowed disabled:text-[var(--neutral-300)]"
               >
                 <Minus className="size-4" aria-hidden="true" />
               </button>
-              <span className="min-w-8 text-center text-sm font-semibold">
+              <span className="min-w-7 text-center text-sm font-semibold">
                 {inCart}
               </span>
               <button
@@ -91,7 +96,7 @@ export function ProductCard({ product }: Props) {
                 onClick={() => setQuantity(product.id, inCart + 1)}
                 disabled={!canIncrement}
                 aria-label={t('cart.quantity')}
-                className="px-2.5 py-1.5 text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
+                className="flex size-9 items-center justify-center text-foreground hover:bg-[var(--neutral-200)] disabled:cursor-not-allowed disabled:text-[var(--neutral-300)]"
               >
                 <Plus className="size-4" aria-hidden="true" />
               </button>

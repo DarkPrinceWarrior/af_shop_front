@@ -41,7 +41,9 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" aria-label={t('cart.title')}>
         <SheetHeader>
-          <SheetTitle>{t('cart.title')}</SheetTitle>
+          <SheetTitle className="font-display tracking-tight">
+            {t('cart.title')}
+          </SheetTitle>
           <SheetClose asChild>
             <Button
               type="button"
@@ -68,13 +70,13 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
               return (
                 <div
                   key={product.id}
-                  className="grid grid-cols-[64px_minmax(0,1fr)] gap-3 rounded-lg border border-border bg-card p-2"
+                  className="grid grid-cols-[64px_minmax(0,1fr)] gap-3 rounded-xl bg-[var(--button-neutral-bg)] p-3"
                 >
                   <ProductImage
                     path={primaryImage?.image_path}
                     alt={primaryImage?.alt || product.name}
                     fallbackLabel={t('common.noImage')}
-                    className="aspect-square h-16 w-16 overflow-hidden rounded-md bg-muted"
+                    className="aspect-square h-16 w-16 overflow-hidden rounded-lg bg-muted"
                   />
                   <div className="flex min-w-0 flex-col gap-1">
                     <h3 className="m-0 break-words text-sm font-semibold">
@@ -92,7 +94,7 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
                     </div>
                     <div className="mt-auto flex items-center justify-between gap-2">
                       <div
-                        className="inline-flex items-center overflow-hidden rounded-md border border-input bg-card"
+                        className="inline-flex items-center overflow-hidden rounded-full bg-card"
                         role="group"
                         aria-label={t('cart.quantity')}
                       >
@@ -101,11 +103,11 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
                           onClick={() => setQuantity(product.id, line.quantity - 1)}
                           disabled={!canDecrement}
                           aria-label={t('cart.quantity')}
-                          className="px-2.5 py-1.5 hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
+                          className="flex size-8 items-center justify-center hover:bg-muted disabled:cursor-not-allowed disabled:text-[var(--neutral-300)]"
                         >
                           <Minus className="size-4" aria-hidden="true" />
                         </button>
-                        <span className="min-w-8 text-center text-sm font-semibold">
+                        <span className="min-w-7 text-center text-sm font-semibold">
                           {line.quantity}
                         </span>
                         <button
@@ -113,7 +115,7 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
                           onClick={() => setQuantity(product.id, line.quantity + 1)}
                           disabled={!canIncrement}
                           aria-label={t('cart.quantity')}
-                          className="px-2.5 py-1.5 hover:bg-muted disabled:cursor-not-allowed disabled:text-input"
+                          className="flex size-8 items-center justify-center hover:bg-muted disabled:cursor-not-allowed disabled:text-[var(--neutral-300)]"
                         >
                           <Plus className="size-4" aria-hidden="true" />
                         </button>
@@ -140,23 +142,26 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: Props) {
         </div>
 
         <SheetFooter>
-          <div className="flex justify-between text-base font-bold">
-            <span>{t('cart.subtotal')}</span>
-            <span>{formatPrice(subtotal.toFixed(2), currency, language)}</span>
+          <div className="flex items-baseline justify-between">
+            <span className="text-sm text-muted-foreground">{t('cart.subtotal')}</span>
+            <span className="font-display text-xl font-medium tracking-tight">
+              {formatPrice(subtotal.toFixed(2), currency, language)}
+            </span>
           </div>
           <Button
             type="button"
             onClick={onCheckout}
             disabled={lines.length === 0}
-            className="w-full"
+            size="lg"
+            className="w-full rounded-full"
           >
             {t('cart.checkout')}
           </Button>
           <Button
             type="button"
-            variant="outline"
+            variant="secondary"
             onClick={() => onOpenChange(false)}
-            className="w-full"
+            className="w-full rounded-full"
           >
             {t('cart.continueShopping')}
           </Button>

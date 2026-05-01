@@ -32,7 +32,7 @@ const INITIAL_FORM: FormState = {
   delivery_place_id: null,
 };
 
-const SECTION = 'rounded-lg border border-border bg-card p-4 shadow-sm';
+const SECTION = 'rounded-xl border border-border bg-card p-5';
 
 export function Checkout({ onBack, onSuccess }: Props) {
   const {
@@ -212,11 +212,13 @@ export function Checkout({ onBack, onSuccess }: Props) {
           <ArrowLeft className="size-4 rtl:rotate-180" aria-hidden="true" />
           {t('checkout.back')}
         </Button>
-        <h2 className="my-2 text-xl font-semibold">{t('checkout.title')}</h2>
+        <h2 className="my-2 font-display text-2xl font-medium tracking-tighter">
+          {t('checkout.title')}
+        </h2>
       </div>
 
       <section className={SECTION}>
-        <h3 className="mb-3 text-[15px] font-semibold">{t('checkout.customer')}</h3>
+        <h3 className="mb-4 font-display text-lg font-medium tracking-tight">{t('checkout.customer')}</h3>
         <Field
           htmlFor="customer_name"
           label={`${t('checkout.name')} *`}
@@ -270,7 +272,7 @@ export function Checkout({ onBack, onSuccess }: Props) {
       </section>
 
       <section className={SECTION}>
-        <h3 className="mb-3 text-[15px] font-semibold">{t('checkout.delivery')}</h3>
+        <h3 className="mb-4 font-display text-lg font-medium tracking-tight">{t('checkout.delivery')}</h3>
         {deliveryPlaces.length === 0 ? (
           <Alert variant="info">{t('common.empty')}</Alert>
         ) : (
@@ -290,7 +292,7 @@ export function Checkout({ onBack, onSuccess }: Props) {
       </section>
 
       <section className={SECTION}>
-        <h3 className="mb-3 text-[15px] font-semibold">{t('checkout.summary')}</h3>
+        <h3 className="mb-4 font-display text-lg font-medium tracking-tight">{t('checkout.summary')}</h3>
         {quoteLoading && (
           <div className="flex items-center gap-2.5 px-4 py-2 text-sm text-muted-foreground">
             <Spinner />
@@ -322,7 +324,12 @@ export function Checkout({ onBack, onSuccess }: Props) {
 
       {error && <Alert variant="error">{error}</Alert>}
 
-      <Button type="submit" disabled={!canSubmit} size="lg" className="w-full">
+      <Button
+        type="submit"
+        disabled={!canSubmit}
+        size="lg"
+        className="w-full rounded-full"
+      >
         {submitting ? t('checkout.placing') : t('checkout.placeOrder')}
       </Button>
     </form>
@@ -390,10 +397,10 @@ function Alert({
       role="status"
       aria-live="polite"
       className={cn(
-        'flex items-start gap-2 rounded-lg border px-3.5 py-3 text-sm leading-snug',
+        'flex items-start gap-2 rounded-xl px-4 py-3 text-sm leading-snug',
         variant === 'error'
-          ? 'border-destructive/40 bg-destructive/10 text-destructive'
-          : 'border-accent/30 bg-accent/10 text-accent',
+          ? 'bg-destructive-soft text-destructive'
+          : 'bg-[var(--primary-soft)] text-primary',
       )}
     >
       <div className="flex-1">{children}</div>

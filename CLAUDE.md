@@ -74,10 +74,14 @@ before `git commit`.
   requires updating the union *and* all three dictionaries (`en`, `ps`,
   `zh-CN`) — the TS build fails otherwise. RTL is driven by `RTL_LANGUAGES`.
 - **Styling**: Tailwind 4 with `@theme inline` design tokens in
-  `src/styles/globals.css` (oklch color space). Tokens follow the shadcn naming:
-  `--color-background`, `--color-card`, `--color-primary`, `--color-muted`,
-  `--color-destructive`, etc. `tw-animate-css` is loaded for Sheet/Dialog
-  animations. No `tailwind.config.js` — Tailwind 4 reads tokens from CSS.
+  `src/styles/globals.css`. Tokens are lifted from the **Альма** design system
+  (sister project). Neutral palette `#f9f9f9 / #f3f3f3 / #e5e5e5 / #c1c1c1 /
+  #797979 / #424247 / #222226`; primary `#4b4ce6`; semantic destructive `#c43232`,
+  warning `#d2a232` — each with a soft tint variant (`*-soft`) for backgrounds.
+  Radii: `sm 8px / md 12px / lg 16px / xl 32px / full pill`. Typography: display
+  **Commissioner** + body **Geist**, both via Google Fonts (`<link>` in
+  `index.html`). `tw-animate-css` loads animations for Sheet/Dialog. No
+  `tailwind.config.js` — Tailwind 4 reads tokens from CSS.
 
 ## Component layout
 

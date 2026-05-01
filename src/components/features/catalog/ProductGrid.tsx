@@ -18,7 +18,7 @@ export function ProductGrid({ products }: Props) {
   }
 
   return (
-    <div className="grid gap-3 grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
+    <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(220px,1fr))]">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
