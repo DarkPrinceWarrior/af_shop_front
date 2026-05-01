@@ -16,7 +16,7 @@
 | 3 | Telegram‑уведомления при заказе | ✅ done | smoke‑order `SM-20260430194114-7EBAB0`, токены в root `.env` |
 | 4 | Реальные изображения товаров и мест доставки | ✅ done | volume `shop_meraj_media_data`; 4 продукта (Unsplash/Pexels/Pixabay) + 10 camps (Picsum) |
 | 5 | Тесты во фронте (Vitest + Playwright) | ✅ done | Vitest 16 passed; Playwright e2e 3 passed (chromium) |
-| 6 | A11y / UX‑полировка drawer и форм | 🟡 pending | `front/src/components/` |
+| 6 | A11y / UX‑полировка drawer и форм | ✅ done | inv. зафиксированы в `e2e/a11y.spec.ts`; scroll‑to‑top + auto‑close в `Layout.tsx` |
 | 7 | Production deployment plan | ⚪ later | TBD |
 
 ---
@@ -133,23 +133,27 @@ npx playwright show-report
 
 ---
 
-## №6. A11y / UX‑полировка
+## №6. A11y / UX‑полировка ✅
 
 **Цель**: убрать раздражающие шероховатости в drawer и форме.
 
-Список:
+Что фактически сделано:
 
-1. Focus trap в `CartDrawer` (Tab не должен «убегать» на фон).
-2. `body { overflow: hidden }` при открытом drawer.
-3. Автозакрытие drawer и сброс прокрутки при переходе `view='checkout'` / `view='success'`.
-4. `aria-live="polite"` на блок ошибок quote/checkout.
-5. Submit‑кнопка должна автоматически терять фокус после успеха, чтобы Enter не отправлял повторно.
-6. Hover/focus‑state у `delivery-card` — сейчас только `:hover`, добавить `:focus-visible`.
+1. **Focus trap** — приходит из Radix `Dialog.Content` (FocusScope) под `Sheet`.
+   Tab крутится внутри drawer; Escape закрывает.
+2. **Body scroll lock** — Radix `Dialog` через `react-remove-scroll`
+   ставит `data-scroll-locked="1"` на `<body>` и `overflow:hidden`.
+3. **Автозакрытие drawer + scroll‑to‑top** на смену маршрута — `Layout.tsx`
+   слушает `useLocation().pathname` и делает `window.scrollTo` + `setCartOpen(false)`.
+4. **`aria-live="polite"`** уже стоит на `Alert` в `Checkout.tsx` (и для quote, и для submit‑ошибок).
+5. **Защита от повторного submit Enter‑ом** — `canSubmit` falsy пока `submitting=true`,
+   плюс при успехе форма unmount‑ится при `navigate(...success)`.
+6. **`focus-visible`** на `DeliveryPlaceCard` уже стоит (`focus-visible:ring-2 focus-visible:ring-ring`).
 
 **Verify**:
-- Tab‑навигация в drawer крутится по элементам внутри панели.
-- Скролл основного документа заблокирован при открытом drawer.
-- Lighthouse (mobile): a11y ≥ 95.
+- `e2e/a11y.spec.ts` (3 кейса): Escape закрывает drawer, Tab не сбегает наружу, body lock
+  ставится/снимается синхронно с открытием.
+- `npx playwright test` — 6/6 зелёных.
 
 ---
 
