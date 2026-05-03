@@ -18,7 +18,8 @@
 | 5 | Тесты во фронте (Vitest + Playwright) | ✅ done | Vitest 16 passed; Playwright e2e 6 passed на chromium (после №6) |
 | 6 | A11y / UX‑полировка drawer и форм | ✅ done | inv. зафиксированы в `e2e/a11y.spec.ts`; scroll‑to‑top + auto‑close в `Layout.tsx` |
 | 7 | Re‑skin под Альма design system | ✅ done | `af_shop_front`, коммит `968c09d`; токены + Commissioner/Geist + chrome всех компонентов |
-| 8 | Production deployment plan | ⚪ later | TBD |
+| 8 | Customer auth (login / register / guest) | ✅ done | `af_shop_front`; AuthProvider + AuthPanel в checkout, MyOrdersPage, OrderPublic.user_id |
+| 9 | Production deployment plan | ⚪ later | TBD |
 
 ---
 
@@ -198,6 +199,50 @@ npx playwright show-report
 поэтому live‑бандл вкатан через `docker cp dist/* shop-meraj-front:/usr/share/nginx/html/`.
 При следующем `docker compose up --build -d frontend` (когда сеть пустит)
 это станет частью образа.
+
+---
+
+## №8. Customer auth (login / register / guest) ✅
+
+**Цель**: дать покупателю возможность оформлять заказы как гость или
+авторизовавшись — заказы авторизованного пользователя привязываются к
+аккаунту, гостевые остаются с `user_id = null`.
+
+**Backend контракт** (см. `back/docs/api_frontend.md`):
+
+| Endpoint | Метод | Требует token |
+|---|---|---|
+| `/users/signup` | POST (JSON `email`/`password`/`full_name`) | нет |
+| `/login/access-token` | POST (form‑urlencoded `username`/`password`) | нет |
+| `/users/me` | GET | да |
+| `/catalog/orders` | POST | опционально (Bearer → привязка) |
+| `/catalog/orders/me` | GET | да |
+| `/catalog/orders/me/{id}` | GET | да |
+
+**Файлы**:
+
+- `src/state/{auth.tsx, authContext.ts, useAuth.ts}` — `AuthProvider`,
+  персист token в `localStorage` (`shop-meraj.auth.token`), на init подгружает
+  `/users/me`; на 401 чистит token и user.
+- `src/api/client.ts` — `login`, `signup`, `fetchCurrentUser`, `fetchMyOrders`,
+  `fetchMyOrder`; `quoteOrder`/`createOrder` принимают опциональный token.
+- `src/components/features/auth/AuthPanel.tsx` — три pill‑tab
+  (Guest / Sign in / Sign up), внутри `<div>` (а не `<form>`, чтобы не
+  вкладываться в Checkout `<form>`). При signup сразу делается login.
+- `src/pages/MyOrdersPage.tsx` — `/orders/me`, список с order_number, status,
+  created_at, total. Если не авторизован — кнопка перейти на login.
+- `TopBar` — линк "My orders" появляется при `isAuthenticated`.
+- `Checkout` — `AuthPanel` рендерится первой секцией; `quoteOrder`/
+  `createOrder` вызываются с `token` из `useAuth`. Имя prefill из
+  `user.full_name`.
+- `OrderSuccess` — pill "Saved to your account" если `order.user_id !== null`.
+- i18n keys `auth.*` и `myOrders.*` в `en` / `ps` / `zh-CN`.
+
+**Verify**:
+- `e2e/auth.spec.ts` (2 кейса): guest checkout без token, register на
+  checkout привязывает заказ + показывает в `/orders/me`.
+- `npx playwright test` — 8/8 зелёных.
+- Скриншот: `docs/screenshots/05_checkout_auth_panel.png`.
 
 ---
 

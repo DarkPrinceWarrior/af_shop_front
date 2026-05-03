@@ -1,10 +1,14 @@
 import type {
+  AuthToken,
+  AuthUser,
   CatalogBootstrap,
   CurrencyCode,
   LanguageCode,
   OrderPayload,
   OrderQuote,
   OrderResponse,
+  OrdersList,
+  SignupPayload,
 } from './types';
 
 const RAW_BASE = (import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000').trim();
@@ -22,13 +26,19 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+interface RequestOptions extends RequestInit {
+  token?: string | null;
+}
+
+async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const { token, ...init } = options;
   const url = `${API_BASE_URL}${API_PREFIX}${path}`;
-  const headers = new Headers(init?.headers);
-  if (init?.body && !headers.has('Content-Type')) {
+  const headers = new Headers(init.headers);
+  if (init.body && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
   headers.set('Accept', 'application/json');
+  if (token) headers.set('Authorization', `Bearer ${token}`);
 
   let response: Response;
   try {
@@ -84,18 +94,57 @@ export function fetchBootstrap(
   });
 }
 
-export function quoteOrder(payload: OrderPayload): Promise<OrderQuote> {
+export function quoteOrder(
+  payload: OrderPayload,
+  token?: string | null,
+): Promise<OrderQuote> {
   return request<OrderQuote>('/catalog/orders/quote', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    token,
+  });
+}
+
+export function createOrder(
+  payload: OrderPayload,
+  token?: string | null,
+): Promise<OrderResponse> {
+  return request<OrderResponse>('/catalog/orders', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    token,
+  });
+}
+
+export function login(email: string, password: string): Promise<AuthToken> {
+  const body = new URLSearchParams({ username: email, password });
+  return request<AuthToken>('/login/access-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString(),
+  });
+}
+
+export function signup(payload: SignupPayload): Promise<AuthUser> {
+  return request<AuthUser>('/users/signup', {
     method: 'POST',
     body: JSON.stringify(payload),
   });
 }
 
-export function createOrder(payload: OrderPayload): Promise<OrderResponse> {
-  return request<OrderResponse>('/catalog/orders', {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
+export function fetchCurrentUser(token: string): Promise<AuthUser> {
+  return request<AuthUser>('/users/me', { token });
+}
+
+export function fetchMyOrders(token: string): Promise<OrdersList> {
+  return request<OrdersList>('/catalog/orders/me', { token });
+}
+
+export function fetchMyOrder(
+  token: string,
+  orderId: string,
+): Promise<OrderResponse> {
+  return request<OrderResponse>(`/catalog/orders/me/${orderId}`, { token });
 }
 
 export function resolveMediaUrl(path: string | null | undefined): string | null {

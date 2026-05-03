@@ -28,6 +28,11 @@ export function OrderSuccess({ order, onContinue }: Props) {
       <div className="mt-4 font-display text-3xl font-medium tracking-tighter">
         {formatPrice(order.total, order.currency, language)}
       </div>
+      {order.user_id && (
+        <p className="mt-3 inline-block rounded-full bg-[var(--primary-soft)] px-3 py-1 text-xs font-medium text-primary">
+          {t('success.savedToAccount')}
+        </p>
+      )}
       <p className="my-4 text-sm text-muted-foreground">{t('success.note')}</p>
       <Button
         type="button"

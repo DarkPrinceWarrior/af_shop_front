@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useShop } from '@/state/useShop';
+import { useAuth } from '@/state/useAuth';
 import { ApiError, createOrder, quoteOrder } from '@/api/client';
 import type { OrderPayload, OrderQuote, OrderResponse } from '@/api/types';
 import { formatPrice } from '@/utils/format';
@@ -9,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { AuthPanel } from '@/components/features/auth/AuthPanel';
 import { DeliveryPlaceCard } from './DeliveryPlaceCard';
 
 interface Props {
@@ -44,6 +46,7 @@ export function Checkout({ onBack, onSuccess }: Props) {
     clearCart,
     t,
   } = useShop();
+  const { token, user } = useAuth();
 
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [submitting, setSubmitting] = useState(false);
@@ -67,6 +70,15 @@ export function Checkout({ onBack, onSuccess }: Props) {
       setForm((prev) => ({ ...prev, delivery_place_id: first.id }));
     }
   }, [deliveryPlaces, form.delivery_place_id]);
+
+  useEffect(() => {
+    if (!user) return;
+    setForm((prev) =>
+      prev.customer_name.trim()
+        ? prev
+        : { ...prev, customer_name: user.full_name ?? '' },
+    );
+  }, [user]);
 
   const itemsPayload = useMemo(
     () =>
@@ -108,7 +120,7 @@ export function Checkout({ onBack, onSuccess }: Props) {
 
     setQuoteLoading(true);
     setQuoteError(null);
-    quoteOrder(payload)
+    quoteOrder(payload, token)
       .then((result) => {
         if (seq !== requestSeq.current) return;
         setQuote(result);
@@ -135,6 +147,7 @@ export function Checkout({ onBack, onSuccess }: Props) {
     itemsPayload,
     language,
     currency,
+    token,
   ]);
 
   const handleField =
@@ -178,7 +191,7 @@ export function Checkout({ onBack, onSuccess }: Props) {
     setSubmitting(true);
     setError(null);
     try {
-      const order = await createOrder(payload);
+      const order = await createOrder(payload, token);
       clearCart();
       onSuccess(order);
     } catch (err) {
@@ -216,6 +229,13 @@ export function Checkout({ onBack, onSuccess }: Props) {
           {t('checkout.title')}
         </h2>
       </div>
+
+      <section>
+        <h3 className="mb-3 font-display text-lg font-medium tracking-tight">
+          {t('auth.title')}
+        </h3>
+        <AuthPanel />
+      </section>
 
       <section className={SECTION}>
         <h3 className="mb-4 font-display text-lg font-medium tracking-tight">{t('checkout.customer')}</h3>

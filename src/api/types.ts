@@ -95,5 +95,31 @@ export interface OrderResponse {
   subtotal: string;
   delivery_fee: string;
   total: string;
+  user_id: string | null;
   created_at: string | null;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  full_name: string | null;
+  is_active: boolean;
+  is_superuser: boolean;
+  created_at: string | null;
+}
+
+export interface AuthToken {
+  access_token: string;
+  token_type: string;
+}
+
+export interface SignupPayload {
+  email: string;
+  password: string;
+  full_name?: string | null;
+}
+
+export interface OrdersList {
+  data: OrderResponse[];
+  count: number;
 }

@@ -51,6 +51,26 @@ export type TranslationKey =
   | 'success.total'
   | 'success.note'
   | 'success.continue'
+  | 'success.savedToAccount'
+  | 'auth.title'
+  | 'auth.guest'
+  | 'auth.guestHint'
+  | 'auth.signIn'
+  | 'auth.signUp'
+  | 'auth.email'
+  | 'auth.password'
+  | 'auth.fullName'
+  | 'auth.submit'
+  | 'auth.signedInAs'
+  | 'auth.logout'
+  | 'auth.haveAccount'
+  | 'auth.noAccount'
+  | 'auth.myOrders'
+  | 'myOrders.title'
+  | 'myOrders.empty'
+  | 'myOrders.created'
+  | 'myOrders.status'
+  | 'myOrders.total'
   | 'common.loading'
   | 'common.retry'
   | 'common.close'
@@ -104,6 +124,26 @@ const en: Dict = {
   'success.total': 'Total',
   'success.note': 'We will contact you shortly to confirm the delivery.',
   'success.continue': 'Back to shop',
+  'success.savedToAccount': 'Saved to your account',
+  'auth.title': 'Place order as',
+  'auth.guest': 'Guest',
+  'auth.guestHint': 'Continue without an account.',
+  'auth.signIn': 'Sign in',
+  'auth.signUp': 'Sign up',
+  'auth.email': 'Email',
+  'auth.password': 'Password',
+  'auth.fullName': 'Full name',
+  'auth.submit': 'Continue',
+  'auth.signedInAs': 'Signed in as {name}',
+  'auth.logout': 'Sign out',
+  'auth.haveAccount': 'Already have an account? Sign in',
+  'auth.noAccount': "Don't have an account? Sign up",
+  'auth.myOrders': 'My orders',
+  'myOrders.title': 'My orders',
+  'myOrders.empty': 'No orders yet.',
+  'myOrders.created': 'Created',
+  'myOrders.status': 'Status',
+  'myOrders.total': 'Total',
   'common.loading': 'Loading…',
   'common.retry': 'Retry',
   'common.close': 'Close',
@@ -156,6 +196,26 @@ const ps: Dict = {
   'success.total': 'ټوله',
   'success.note': 'موږ به ډېر ژر د تایید لپاره ستاسو سره اړیکه ونیسو.',
   'success.continue': 'پلورنځي ته بېرته',
+  'success.savedToAccount': 'ستاسو حساب کې خوندي شوه',
+  'auth.title': 'د سپارښتنې طرز',
+  'auth.guest': 'مېلمه',
+  'auth.guestHint': 'پرته له حساب دوام ورکړئ.',
+  'auth.signIn': 'ننوتل',
+  'auth.signUp': 'حساب جوړول',
+  'auth.email': 'ایمیل',
+  'auth.password': 'پاسورډ',
+  'auth.fullName': 'بشپړ نوم',
+  'auth.submit': 'دوام',
+  'auth.signedInAs': 'د {name} په توګه ننوتل شوي',
+  'auth.logout': 'وتل',
+  'auth.haveAccount': 'مخکې حساب لرئ؟ ننوتل',
+  'auth.noAccount': 'حساب نه لرئ؟ نوي جوړ کړئ',
+  'auth.myOrders': 'زما سپارښتنې',
+  'myOrders.title': 'زما سپارښتنې',
+  'myOrders.empty': 'لا تر اوسه هېڅ سپارښتنه نشته.',
+  'myOrders.created': 'نېټه',
+  'myOrders.status': 'حالت',
+  'myOrders.total': 'ټوله',
   'common.loading': 'بارېږي…',
   'common.retry': 'بیا هڅه وکړئ',
   'common.close': 'بندول',
@@ -208,6 +268,26 @@ const zhCN: Dict = {
   'success.total': '合计',
   'success.note': '我们会尽快与您联系确认配送。',
   'success.continue': '返回商店',
+  'success.savedToAccount': '已保存到您的账户',
+  'auth.title': '下单方式',
+  'auth.guest': '访客',
+  'auth.guestHint': '无需注册即可下单。',
+  'auth.signIn': '登录',
+  'auth.signUp': '注册',
+  'auth.email': '邮箱',
+  'auth.password': '密码',
+  'auth.fullName': '姓名',
+  'auth.submit': '继续',
+  'auth.signedInAs': '已登录：{name}',
+  'auth.logout': '退出登录',
+  'auth.haveAccount': '已有账号？去登录',
+  'auth.noAccount': '没有账号？注册',
+  'auth.myOrders': '我的订单',
+  'myOrders.title': '我的订单',
+  'myOrders.empty': '暂无订单。',
+  'myOrders.created': '创建时间',
+  'myOrders.status': '状态',
+  'myOrders.total': '合计',
   'common.loading': '加载中…',
   'common.retry': '重试',
   'common.close': '关闭',

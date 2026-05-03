@@ -1,5 +1,7 @@
-import { ShoppingCart } from 'lucide-react';
+import { Link } from 'react-router';
+import { Receipt, ShoppingCart } from 'lucide-react';
 import { useShop } from '@/state/useShop';
+import { useAuth } from '@/state/useAuth';
 import { LANGUAGE_LABELS } from '@/i18n/dict';
 import {
   Select,
@@ -17,6 +19,7 @@ interface TopBarProps {
 
 export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
   const { language, currency, bootstrap, setLanguage, setCurrency, t } = useShop();
+  const { isAuthenticated } = useAuth();
 
   const languages: LanguageCode[] = bootstrap?.languages ?? ['en', 'ps', 'zh-CN'];
   const currencies: CurrencyCode[] = bootstrap?.currencies ?? ['AFN', 'CNY', 'USD'];
@@ -65,6 +68,16 @@ export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
               ))}
             </SelectContent>
           </Select>
+          {isAuthenticated && (
+            <Link
+              to="/orders/me"
+              aria-label={t('auth.myOrders')}
+              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--button-neutral-bg)] backdrop-blur-xl px-3.5 py-2 text-sm font-medium hover:bg-[var(--neutral-200)] focus:outline-none focus:ring-2 focus:ring-ring"
+            >
+              <Receipt aria-hidden="true" className="size-4" />
+              <span className="hidden sm:inline">{t('auth.myOrders')}</span>
+            </Link>
+          )}
           <button
             type="button"
             onClick={onOpenCart}

@@ -2,10 +2,12 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { ShopProvider } from '@/state/store';
+import { AuthProvider } from '@/state/auth';
 import Layout from '@/Layout';
 import CatalogPage from '@/pages/CatalogPage';
 import CheckoutPage from '@/pages/CheckoutPage';
 import SuccessPage from '@/pages/SuccessPage';
+import MyOrdersPage from '@/pages/MyOrdersPage';
 import './styles/globals.css';
 
 const router = createBrowserRouter([
@@ -15,6 +17,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, Component: CatalogPage },
       { path: 'checkout', Component: CheckoutPage },
+      { path: 'orders/me', Component: MyOrdersPage },
       { path: 'orders/:orderNumber/success', Component: SuccessPage },
     ],
   },
@@ -27,8 +30,10 @@ if (!container) {
 
 createRoot(container).render(
   <StrictMode>
-    <ShopProvider>
-      <RouterProvider router={router} />
-    </ShopProvider>
+    <AuthProvider>
+      <ShopProvider>
+        <RouterProvider router={router} />
+      </ShopProvider>
+    </AuthProvider>
   </StrictMode>,
 );
