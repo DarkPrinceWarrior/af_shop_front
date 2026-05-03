@@ -1,16 +1,19 @@
 import { ShoppingCart } from 'lucide-react';
 import { useShop } from '@/state/useShop';
 import { LANGUAGE_LABELS } from '@/i18n/dict';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import type { CurrencyCode, LanguageCode } from '@/api/types';
 
 interface TopBarProps {
   cartCount: number;
   onOpenCart: () => void;
 }
-
-const SELECT_PILL =
-  'appearance-none rounded-full bg-[var(--button-neutral-bg)] backdrop-blur-xl py-2 pe-7 ps-3 text-sm font-medium cursor-pointer ' +
-  'hover:bg-[var(--neutral-200)] focus:outline-none focus:ring-2 focus:ring-ring';
 
 export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
   const { language, currency, bootstrap, setLanguage, setCurrency, t } = useShop();
@@ -32,30 +35,36 @@ export function TopBar({ cartCount, onOpenCart }: TopBarProps) {
         </div>
         <div className="flex-1" />
         <div className="flex items-center gap-2">
-          <select
-            className={SELECT_PILL}
+          <Select
             value={language}
-            onChange={(e) => setLanguage(e.target.value as LanguageCode)}
-            aria-label={t('topbar.language')}
+            onValueChange={(v) => setLanguage(v as LanguageCode)}
           >
-            {languages.map((lng) => (
-              <option key={lng} value={lng}>
-                {LANGUAGE_LABELS[lng]}
-              </option>
-            ))}
-          </select>
-          <select
-            className={SELECT_PILL}
+            <SelectTrigger aria-label={t('topbar.language')}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {languages.map((lng) => (
+                <SelectItem key={lng} value={lng}>
+                  {LANGUAGE_LABELS[lng]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select
             value={currency}
-            onChange={(e) => setCurrency(e.target.value as CurrencyCode)}
-            aria-label={t('topbar.currency')}
+            onValueChange={(v) => setCurrency(v as CurrencyCode)}
           >
-            {currencies.map((cur) => (
-              <option key={cur} value={cur}>
-                {cur}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger aria-label={t('topbar.currency')}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {currencies.map((cur) => (
+                <SelectItem key={cur} value={cur}>
+                  {cur}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <button
             type="button"
             onClick={onOpenCart}
