@@ -32,17 +32,18 @@ export function ProductCard({ product }: Props) {
       : 'bg-[var(--button-neutral-bg)] text-muted-foreground';
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl bg-card border border-border transition-colors hover:border-[var(--neutral-300)]">
-      <div className="overflow-hidden rounded-xl">
+    <article className="group flex flex-col overflow-hidden rounded-2xl bg-card border border-border p-2 transition-all hover:border-[var(--neutral-300)] hover:shadow-[0_4px_24px_-8px_rgba(34,34,38,0.08)]">
+      <div className="overflow-hidden rounded-xl bg-muted">
         <ProductImage
           path={primaryImage?.image_path}
           alt={primaryImage?.alt || product.name}
           fallbackLabel={t('common.noImage')}
+          className="aspect-[4/3] w-full"
         />
       </div>
-      <div className="flex flex-1 flex-col gap-2 p-4">
+      <div className="flex flex-1 flex-col gap-2 p-3">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="m-0 font-display text-[19px] font-medium leading-tight tracking-tight break-words">
+          <h3 className="m-0 font-display text-[18px] font-medium leading-tight tracking-tight break-words">
             {product.name}
           </h3>
           <span

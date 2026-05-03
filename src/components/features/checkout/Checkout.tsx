@@ -372,15 +372,20 @@ function Row({
   bold?: boolean;
   children: React.ReactNode;
 }) {
+  if (bold) {
+    return (
+      <div className="mt-3 flex items-baseline justify-between border-t border-border pt-3">
+        <span className="text-sm text-muted-foreground">{label}</span>
+        <span className="font-display text-xl font-medium tracking-tight text-foreground">
+          {children}
+        </span>
+      </div>
+    );
+  }
   return (
-    <div
-      className={cn(
-        'flex justify-between',
-        bold ? 'mt-2 text-base font-bold text-foreground' : 'text-sm text-muted-foreground',
-      )}
-    >
-      <span>{label}</span>
-      <span>{children}</span>
+    <div className="flex items-baseline justify-between py-1.5 text-sm">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="font-medium text-foreground">{children}</span>
     </div>
   );
 }

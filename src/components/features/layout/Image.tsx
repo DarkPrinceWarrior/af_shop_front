@@ -34,7 +34,7 @@ export function ProductImage({ path, alt, fallbackLabel, className }: ImageProps
         <div
           className={cn(
             'absolute inset-0 flex items-center justify-center text-xs text-muted-foreground',
-            'bg-[repeating-linear-gradient(45deg,var(--muted),var(--muted)_10px,oklch(0.93_0.005_90)_10px,oklch(0.93_0.005_90)_20px)]',
+            'bg-[repeating-linear-gradient(45deg,var(--muted),var(--muted)_10px,var(--neutral-200)_10px,var(--neutral-200)_20px)]',
           )}
           aria-label={fallbackLabel}
         >
