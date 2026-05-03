@@ -15,9 +15,10 @@
 | 2 | Визуальная проверка end‑to‑end | ✅ done | покрыто Playwright‑прогоном из №5 (`e2e/checkout.spec.ts`, `e2e/rtl.spec.ts`, `e2e/stock-cap.spec.ts`) |
 | 3 | Telegram‑уведомления при заказе | ✅ done | smoke‑order `SM-20260430194114-7EBAB0`, токены в root `.env` |
 | 4 | Реальные изображения товаров и мест доставки | ✅ done | volume `shop_meraj_media_data`; 4 продукта (Unsplash/Pexels/Pixabay) + 10 camps (Picsum) |
-| 5 | Тесты во фронте (Vitest + Playwright) | ✅ done | Vitest 16 passed; Playwright e2e 3 passed (chromium) |
+| 5 | Тесты во фронте (Vitest + Playwright) | ✅ done | Vitest 16 passed; Playwright e2e 6 passed на chromium (после №6) |
 | 6 | A11y / UX‑полировка drawer и форм | ✅ done | inv. зафиксированы в `e2e/a11y.spec.ts`; scroll‑to‑top + auto‑close в `Layout.tsx` |
-| 7 | Production deployment plan | ⚪ later | TBD |
+| 7 | Re‑skin под Альма design system | ✅ done | `af_shop_front`, коммит `968c09d`; токены + Commissioner/Geist + chrome всех компонентов |
+| 8 | Production deployment plan | ⚪ later | TBD |
 
 ---
 
@@ -154,6 +155,49 @@ npx playwright show-report
 - `e2e/a11y.spec.ts` (3 кейса): Escape закрывает drawer, Tab не сбегает наружу, body lock
   ставится/снимается синхронно с открытием.
 - `npx playwright test` — 6/6 зелёных.
+
+---
+
+## №7. Re‑skin под Альма design system ✅
+
+**Цель**: привести storefront к визуальному языку sister‑проекта `alma_servie`
+(дашборд "Аномалии Альма") — общая система токенов, шрифтов и chrome для
+всех продуктов DS Mind Lab.
+
+**Источник**: Figma `rm2fZdmK0tuVHkocA3Fdfv` node `92:889` (главный экран Альма).
+
+**Что сделано** (commit `968c09d`):
+
+1. **Токены** — `src/styles/globals.css` переписан:
+   - Нейтральная палитра `#f9f9f9 / #f3f3f3 / #e5e5e5 / #c1c1c1 / #797979 / #424247 / #222226`.
+   - Primary `#4b4ce6` (фиолетово‑синий из Альма) + `--primary-soft` для backgrounds.
+   - Семантика: `destructive #c43232` + `--destructive-soft`; `warning #d2a232` + `--warning-soft`.
+   - Радиусы: `sm 8px / md 12px / lg 16px / xl 32px / full pill`.
+   - Frosted chrome: `--card-tint` и `--button-neutral-bg` для backdrop‑blur поверхностей.
+2. **Шрифты** — Commissioner (display) + Geist (body) через Google Fonts
+   (`<link>` в `index.html`, токены `--font-display` / `--font-sans` в `@theme inline`).
+3. **shadcn primitives** — `Button` (rounded‑lg, font‑medium, secondary frosted),
+   `Input` / `Textarea` (rounded‑sm filled grey, focus → bg‑card).
+4. **Feature‑компоненты**:
+   - `TopBar` — pill controls (`rounded-full`, frosted), display title.
+   - `ProductCard` — rounded‑xl, pill stock badge с tone‑aware фоном, rounded‑full quantity stepper.
+   - `CategoryFilter` — soft pill для активного фильтра на mobile, primary‑soft на desktop.
+   - `SearchBar` — заменён inline SVG на `lucide` `Search`.
+   - `CartDrawer` — frosted line tile, pill checkout buttons.
+   - `DeliveryPlaceCard` — primary‑soft halo для selected.
+   - `Checkout` sections + `Alert` — rounded‑xl, semantic soft backgrounds.
+   - `OrderSuccess` — rounded‑2xl, primary‑soft icon halo, display total.
+5. **Иконки** — lucide остаётся единственным источником, без новых пакетов.
+
+**Verify**:
+- Pre‑commit gate: `lint → typecheck → build → test:run` — clean.
+- `npm run test:e2e` — 6/6 на chromium.
+- Скриншот: `front/docs/screenshots/01_catalog_redesign.png`.
+
+**Заметка деплоя**: docker registry HEAD‑запросы на момент коммита падали,
+поэтому live‑бандл вкатан через `docker cp dist/* shop-meraj-front:/usr/share/nginx/html/`.
+При следующем `docker compose up --build -d frontend` (когда сеть пустит)
+это станет частью образа.
 
 ---
 
